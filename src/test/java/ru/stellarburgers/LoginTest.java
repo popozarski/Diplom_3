@@ -26,6 +26,8 @@ public class LoginTest extends BaseTest {
         testPassword = TestDataGenerator.generateValidPassword();
         String testName = TestDataGenerator.generateName();
 
+
+
         // Регистрируем пользователя
         driver.get("https://stellarburgers.education-services.ru/register");
         RegistrationPage registrationPage = new RegistrationPage(driver);

@@ -27,6 +27,8 @@ public class BaseTest {
 
         driver.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
         driver.get("https://stellarburgers.education-services.ru/");
+
+
     }
 
     @After

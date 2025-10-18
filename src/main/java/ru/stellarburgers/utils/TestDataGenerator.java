@@ -16,6 +16,8 @@ public class TestDataGenerator {
     public static String generateName() {
         String[] names = {"Иван", "Петр", "Сергей", "Алексей", "Дмитрий"};
         return names[random.nextInt(names.length)];
+
+
     }
 
     // Генерация валидного пароля (6+ символов)

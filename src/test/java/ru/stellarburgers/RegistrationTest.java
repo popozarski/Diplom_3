@@ -18,6 +18,8 @@ public class RegistrationTest extends BaseTest {
         String email = TestDataGenerator.generateEmail();
         String password = TestDataGenerator.generateValidPassword();
 
+
+
         // Переходим на страницу регистрации
         driver.get("https://stellarburgers.education-services.ru/register");
 

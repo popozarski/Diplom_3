@@ -17,6 +17,8 @@ public class RegistrationPage extends BasePage {
         super(driver);
     }
 
+
+
     // Ввести имя
     public void enterName(String name) {
         typeText(nameInput, name);

@@ -28,6 +28,8 @@ public class BasePage {
         waitForElement(locator).click();
     }
 
+
+
     // Ввод текста
     protected void typeText(By locator, String text) {
         WebElement element = waitForElement(locator);

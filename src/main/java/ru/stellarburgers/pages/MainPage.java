@@ -28,6 +28,8 @@ public class MainPage extends BasePage {
     // Нажать "Войти в аккаунт"
     public void clickLoginButton() {
         click(loginButton);
+
+
     }
 
     // Нажать "Личный Кабинет"

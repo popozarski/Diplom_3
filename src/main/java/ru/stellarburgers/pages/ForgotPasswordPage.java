@@ -14,6 +14,8 @@ public class ForgotPasswordPage extends BasePage {
         super(driver);
     }
 
+
+
     // Ввести email
     public void enterEmail(String email) {
         typeText(emailInput, email);
