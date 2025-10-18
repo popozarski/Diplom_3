@@ -19,6 +19,8 @@ public class RegistrationPage extends BasePage {
 
 
 
+
+
     // Ввести имя
     public void enterName(String name) {
         typeText(nameInput, name);

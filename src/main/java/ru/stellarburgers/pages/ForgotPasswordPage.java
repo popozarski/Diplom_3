@@ -16,6 +16,8 @@ public class ForgotPasswordPage extends BasePage {
 
 
 
+
+
     // Ввести email
     public void enterEmail(String email) {
         typeText(emailInput, email);

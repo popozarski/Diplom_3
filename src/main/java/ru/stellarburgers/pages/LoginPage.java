@@ -29,6 +29,8 @@ public class LoginPage extends BasePage {
     // Нажать "Войти"
     public void clickLoginButton() {
 
+
+
         click(loginButton);
     }
 

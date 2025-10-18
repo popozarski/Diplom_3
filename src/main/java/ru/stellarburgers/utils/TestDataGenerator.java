@@ -12,6 +12,8 @@ public class TestDataGenerator {
         return "test_user_" + timestamp + "@yandex.ru";
     }
 
+
+
     // Генерация случайного имени
     public static String generateName() {
         String[] names = {"Иван", "Петр", "Сергей", "Алексей", "Дмитрий"};

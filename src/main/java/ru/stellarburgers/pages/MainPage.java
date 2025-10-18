@@ -30,6 +30,8 @@ public class MainPage extends BasePage {
         click(loginButton);
 
 
+
+
     }
 
     // Нажать "Личный Кабинет"

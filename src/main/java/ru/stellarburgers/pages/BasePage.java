@@ -22,6 +22,8 @@ public class BasePage {
         return wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
     }
 
+
+
     // Клик по элементу
     protected void click(By locator) {
 
