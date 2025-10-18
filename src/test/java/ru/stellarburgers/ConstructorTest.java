@@ -49,8 +49,6 @@ public class ConstructorTest extends BaseTest {
         // Открываем главную страницу
         driver.get("https://stellarburgers.education-services.ru/");
 
-
-
         MainPage mainPage = new MainPage(driver);
 
         // Переходим к Соусам
