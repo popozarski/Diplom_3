@@ -1,0 +1,6 @@
+ru\stellarburgers\pages\LoginPage.class
+ru\stellarburgers\pages\ForgotPasswordPage.class
+ru\stellarburgers\pages\BasePage.class
+ru\stellarburgers\pages\MainPage.class
+ru\stellarburgers\pages\RegistrationPage.class
+ru\stellarburgers\utils\TestDataGenerator.class

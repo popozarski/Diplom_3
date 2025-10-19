@@ -1,0 +1,58 @@
+{
+  "uid" : "9d97da8a6802f6a1",
+  "name" : "Переход к разделу 'Булки'",
+  "fullName" : "ru.stellarburgers.ConstructorTest.testNavigateToBunsSection",
+  "historyId" : "90e2e3ab55d98769e373265a24de1d1f",
+  "time" : {
+    "start" : 1760821024021,
+    "stop" : 1760821056247,
+    "duration" : 32226
+  },
+  "description" : "Проверяем, что работает переход к разделу Булки в конструкторе",
+  "descriptionHtml" : "<p>Проверяем, что работает переход к разделу Булки в конструкторе</p>\n",
+  "status" : "passed",
+  "flaky" : false,
+  "newFailed" : false,
+  "beforeStages" : [ ],
+  "afterStages" : [ ],
+  "labels" : [ {
+    "name" : "package",
+    "value" : "ru.stellarburgers"
+  }, {
+    "name" : "testClass",
+    "value" : "ru.stellarburgers.ConstructorTest"
+  }, {
+    "name" : "testMethod",
+    "value" : "testNavigateToBunsSection"
+  }, {
+    "name" : "suite",
+    "value" : "ru.stellarburgers.ConstructorTest"
+  }, {
+    "name" : "host",
+    "value" : "popozarskii"
+  }, {
+    "name" : "thread",
+    "value" : "3984@popozarskii.main(1)"
+  }, {
+    "name" : "framework",
+    "value" : "junit4"
+  }, {
+    "name" : "language",
+    "value" : "java"
+  }, {
+    "name" : "resultFormat",
+    "value" : "allure2"
+  } ],
+  "parameters" : [ ],
+  "links" : [ ],
+  "hidden" : false,
+  "retry" : false,
+  "extra" : {
+    "severity" : "normal",
+    "retries" : [ ],
+    "categories" : [ ],
+    "tags" : [ ]
+  },
+  "source" : "9d97da8a6802f6a1.json",
+  "parameterValues" : [ ]
+}
