@@ -11,6 +11,11 @@
 *.iml
 *.ipr
 
+.idea/
+.allure/
+*.iml
+
+
 ### Eclipse ###
 .apt_generated
 .classpath

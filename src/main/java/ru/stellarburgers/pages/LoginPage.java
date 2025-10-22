@@ -1,40 +1,35 @@
 package ru.stellarburgers.pages;
 
+import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
 public class LoginPage extends BasePage {
 
-    // Локаторы
-    private final By emailInput = By.xpath("//label[text()='Email']/following-sibling::input");
+    private final By emailInput    = By.xpath("//label[text()='Email']/following-sibling::input");
     private final By passwordInput = By.xpath("//input[@type='password']");
-    private final By loginButton = By.xpath("//button[text()='Войти']");
-
-
+    private final By loginButton   = By.xpath("//button[text()='Войти']");
 
     public LoginPage(WebDriver driver) {
         super(driver);
     }
 
-    // Ввести email
+    @Step("Ввести email при логине")
     public void enterEmail(String email) {
         typeText(emailInput, email);
     }
 
-    // Ввести пароль
+    @Step("Ввести пароль при логине")
     public void enterPassword(String password) {
         typeText(passwordInput, password);
     }
 
-    // Нажать "Войти"
+    @Step("Нажать кнопку «Войти»")
     public void clickLoginButton() {
-
-
-
         click(loginButton);
     }
 
-    // Выполнить вход (все шаги вместе)
+    @Step("Логин под пользователем {email}")
     public void login(String email, String password) {
         enterEmail(email);
         enterPassword(password);

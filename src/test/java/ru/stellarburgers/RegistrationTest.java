@@ -4,8 +4,12 @@ import io.qameta.allure.Description;
 import io.qameta.allure.junit4.DisplayName;
 import org.junit.Assert;
 import org.junit.Test;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import ru.stellarburgers.pages.RegistrationPage;
 import ru.stellarburgers.utils.TestDataGenerator;
+
+import java.time.Duration;
 
 public class RegistrationTest extends BaseTest {
 
@@ -13,58 +17,38 @@ public class RegistrationTest extends BaseTest {
     @DisplayName("Успешная регистрация пользователя")
     @Description("Проверяем, что можно зарегистрировать пользователя с валидными данными")
     public void testSuccessfulRegistration() {
-        // Генерируем тестовые данные
         String name = TestDataGenerator.generateName();
         String email = TestDataGenerator.generateEmail();
         String password = TestDataGenerator.generateValidPassword();
 
-        // Переходим на страницу регистрации
-        driver.get("https://stellarburgers.education-services.ru/register");
+        driver.get(BASE_URL + "/register");
+        RegistrationPage page = new RegistrationPage(driver);
 
-        // Создаем объект страницы регистрации
-        RegistrationPage registrationPage = new RegistrationPage(driver);
+        page.registerUser(name, email, password);
 
-        // Заполняем форму и регистрируемся
-        registrationPage.registerUser(name, email, password);
+        new WebDriverWait(driver, Duration.ofSeconds(10))
+                .until(ExpectedConditions.urlToBe(BASE_URL + "/login"));
 
-        // Ждем немного для перехода на страницу логина
-        try {
-            Thread.sleep(2000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
-        // Проверяем, что перешли на страницу входа
-        String currentUrl = driver.getCurrentUrl();
-        Assert.assertTrue("После регистрации должен быть переход на /login", 
-            currentUrl.contains("/login"));
+        Assert.assertEquals("После регистрации должен быть переход на /login",
+                BASE_URL + "/login", driver.getCurrentUrl());
     }
 
     @Test
     @DisplayName("Регистрация с коротким паролем")
     @Description("Проверяем, что при пароле меньше 6 символов показывается ошибка")
     public void testRegistrationWithInvalidPassword() {
-        // Генерируем тестовые данные
         String name = TestDataGenerator.generateName();
         String email = TestDataGenerator.generateEmail();
         String invalidPassword = TestDataGenerator.generateInvalidPassword();
 
-        // Переходим на страницу регистрации
-        driver.get("https://stellarburgers.education-services.ru/register");
+        driver.get(BASE_URL + "/register");
+        RegistrationPage page = new RegistrationPage(driver);
 
-        // Создаем объект страницы
-        RegistrationPage registrationPage = new RegistrationPage(driver);
+        page.registerUser(name, email, invalidPassword);
 
-        // Заполняем форму с невалидным паролем
-        registrationPage.registerUser(name, email, invalidPassword);
-
-        // Проверяем, что отображается ошибка
-        Assert.assertTrue("Должна показаться ошибка 'Некорректный пароль'", 
-            registrationPage.isPasswordErrorVisible());
-
-        // Проверяем текст ошибки
-        String errorText = registrationPage.getErrorMessageText();
-        Assert.assertEquals("Текст ошибки должен быть 'Некорректный пароль'", 
-            "Некорректный пароль", errorText);
+        Assert.assertTrue("Должна показаться ошибка 'Некорректный пароль'",
+                page.isPasswordErrorVisible());
+        Assert.assertEquals("Текст ошибки должен быть 'Некорректный пароль'",
+                "Некорректный пароль", page.getErrorMessageText());
     }
 }

@@ -31,9 +31,7 @@
             <scope>test</scope>
         </dependency>
 
-
-
-        <!-- Allure JUnit4 -->
+        <!-- Allure интеграция для JUnit4 -->
         <dependency>
             <groupId>io.qameta.allure</groupId>
             <artifactId>allure-junit4</artifactId>
@@ -41,12 +39,26 @@
             <scope>test</scope>
         </dependency>
 
+        <!-- Allure аннотации (@Step) -->
+        <dependency>
+            <groupId>io.qameta.allure</groupId>
+            <artifactId>allure-java-commons</artifactId>
+            <version>2.24.0</version>
+        </dependency>
+
+        <!-- WebDriverManager -->
         <dependency>
             <groupId>io.github.bonigarcia</groupId>
             <artifactId>webdrivermanager</artifactId>
             <version>5.6.2</version>
         </dependency>
 
+        <!-- RestAssured для API-запросов -->
+        <dependency>
+            <groupId>io.rest-assured</groupId>
+            <artifactId>rest-assured</artifactId>
+            <version>5.3.0</version>
+        </dependency>
     </dependencies>
 
     <build>
@@ -77,7 +89,5 @@
             </plugin>
         </plugins>
     </build>
-
-
 </project>
 

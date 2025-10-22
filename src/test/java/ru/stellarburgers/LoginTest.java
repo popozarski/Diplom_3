@@ -2,145 +2,108 @@ package ru.stellarburgers;
 
 import io.qameta.allure.Description;
 import io.qameta.allure.junit4.DisplayName;
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import ru.stellarburgers.pages.ForgotPasswordPage;
-import ru.stellarburgers.pages.LoginPage;
-import ru.stellarburgers.pages.MainPage;
-import ru.stellarburgers.pages.RegistrationPage;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+import ru.stellarburgers.pages.*;
 import ru.stellarburgers.utils.TestDataGenerator;
+
+import java.time.Duration;
 
 public class LoginTest extends BaseTest {
 
     private String testEmail;
     private String testPassword;
+    private String testName;
 
     @Before
     @Override
     public void setUp() {
         super.setUp();
-
-        // Создаем тестового пользователя для всех тестов входа
-        testEmail = TestDataGenerator.generateEmail();
+        testEmail    = TestDataGenerator.generateEmail();
         testPassword = TestDataGenerator.generateValidPassword();
-        String testName = TestDataGenerator.generateName();
+        testName     = TestDataGenerator.generateName();
 
-        // Регистрируем пользователя
-        driver.get("https://stellarburgers.education-services.ru/register");
-        RegistrationPage registrationPage = new RegistrationPage(driver);
-        registrationPage.registerUser(testName, testEmail, testPassword);
-
-        // Ждем перехода на страницу логина
-        try {
-            Thread.sleep(2000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
-        //После регистрации открываем главную страницу, чтобы начать тесты с чистого состояния
-        driver.get("https://stellarburgers.education-services.ru/");
+        // Создаём пользователя через API
+        TestDataGenerator.createUser(testName, testEmail, testPassword);
     }
 
     @Test
-    @DisplayName("Вход через кнопку 'Войти в аккаунт' на главной")
-    @Description("Проверяем вход через главную кнопку на главной странице")
+    @DisplayName("Вход через главную кнопку")
+    @Description("Проверяем вход через кнопку «Войти в аккаунт»")
     public void testLoginViaMainPageButton() {
         MainPage mainPage = new MainPage(driver);
         mainPage.clickLoginButton();
 
-        // Вводим данные и входим
         LoginPage loginPage = new LoginPage(driver);
         loginPage.login(testEmail, testPassword);
 
-        // Ждем загрузки
-        try {
-            Thread.sleep(2000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        // Ждём перехода на главную
+        new WebDriverWait(driver, Duration.ofSeconds(10))
+                .until(ExpectedConditions.urlToBe(BASE_URL + "/"));
 
-        // Проверяем, что мы на главной странице (URL должен быть /)
-        String currentUrl = driver.getCurrentUrl();
-        Assert.assertTrue("После входа должна быть главная страница",
-                currentUrl.equals("https://stellarburgers.education-services.ru/"));
+        Assert.assertEquals(BASE_URL + "/", driver.getCurrentUrl());
     }
 
     @Test
-    @DisplayName("Вход через кнопку 'Личный кабинет'")
-    @Description("Проверяем вход через кнопку Личный кабинет в шапке")
+    @DisplayName("Вход через Личный кабинет")
+    @Description("Проверяем вход через кнопку «Личный кабинет»")
     public void testLoginViaPersonalAccountButton() {
         MainPage mainPage = new MainPage(driver);
         mainPage.clickPersonalAccount();
 
-        // Вводим данные
         LoginPage loginPage = new LoginPage(driver);
         loginPage.login(testEmail, testPassword);
 
-        // Ждем загрузки
-        try {
-            Thread.sleep(2000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        new WebDriverWait(driver, Duration.ofSeconds(10))
+                .until(ExpectedConditions.urlToBe(BASE_URL + "/"));
 
-        // Проверяем успешный вход
-        String currentUrl = driver.getCurrentUrl();
-        Assert.assertTrue("После входа должна быть главная страница",
-                currentUrl.equals("https://stellarburgers.education-services.ru/"));
+        Assert.assertEquals(BASE_URL + "/", driver.getCurrentUrl());
     }
 
     @Test
     @DisplayName("Вход через форму регистрации")
-    @Description("Проверяем вход через ссылку 'Войти' на странице регистрации")
+    @Description("Проверяем переход из регистрации на логин")
     public void testLoginViaRegistrationForm() {
-        // Открываем страницу регистрации
-        driver.get("https://stellarburgers.education-services.ru/register");
+        driver.get(BASE_URL + "/register");
 
-        RegistrationPage registrationPage = new RegistrationPage(driver);
-        registrationPage.clickLoginLink();
+        RegistrationPage regPage = new RegistrationPage(driver);
+        regPage.clickLoginLink();
 
-        // Вводим данные
         LoginPage loginPage = new LoginPage(driver);
         loginPage.login(testEmail, testPassword);
 
-        // Ждем загрузки
-        try {
-            Thread.sleep(2000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        new WebDriverWait(driver, Duration.ofSeconds(10))
+                .until(ExpectedConditions.urlToBe(BASE_URL + "/"));
 
-        // Проверяем успешный вход
-        String currentUrl = driver.getCurrentUrl();
-        Assert.assertTrue("После входа должна быть главная страница",
-                currentUrl.equals("https://stellarburgers.education-services.ru/"));
+        Assert.assertEquals(BASE_URL + "/", driver.getCurrentUrl());
     }
 
     @Test
-    @DisplayName("Вход через форму восстановления пароля")
-    @Description("Проверяем вход через ссылку 'Войти' на странице восстановления пароля")
+    @DisplayName("Вход через восстановление пароля")
+    @Description("Проверяем переход из восстановления на логин")
     public void testLoginViaForgotPasswordForm() {
-        // Открываем страницу восстановления пароля
-        driver.get("https://stellarburgers.education-services.ru/forgot-password");
+        driver.get(BASE_URL + "/forgot-password");
 
-        ForgotPasswordPage forgotPasswordPage = new ForgotPasswordPage(driver);
-        forgotPasswordPage.clickLoginLink();
+        ForgotPasswordPage forgotPage = new ForgotPasswordPage(driver);
+        forgotPage.clickLoginLink();
 
-        // Вводим данные
         LoginPage loginPage = new LoginPage(driver);
         loginPage.login(testEmail, testPassword);
 
-        // Ждем загрузки
-        try {
-            Thread.sleep(2000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        new WebDriverWait(driver, Duration.ofSeconds(10))
+                .until(ExpectedConditions.urlToBe(BASE_URL + "/"));
 
-        // Проверяем успешный вход
-        String currentUrl = driver.getCurrentUrl();
-        Assert.assertTrue("После входа должна быть главная страница",
-                currentUrl.equals("https://stellarburgers.education-services.ru/"));
+        Assert.assertEquals(BASE_URL + "/", driver.getCurrentUrl());
+    }
+
+    @After
+    public void cleanUp() {
+        TestDataGenerator.deleteUser(testEmail, testPassword);
     }
 }
+
+

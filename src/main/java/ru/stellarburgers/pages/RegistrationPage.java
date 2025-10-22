@@ -1,62 +1,58 @@
 package ru.stellarburgers.pages;
 
+import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
 public class RegistrationPage extends BasePage {
 
-    // Локаторы
-    private final By nameInput = By.xpath("//label[text()='Имя']/following-sibling::input");
-    private final By emailInput = By.xpath("//label[text()='Email']/following-sibling::input");
-    private final By passwordInput = By.xpath("//input[@type='password']");
+    private final By nameInput      = By.xpath("//label[text()='Имя']/following-sibling::input");
+    private final By emailInput     = By.xpath("//label[text()='Email']/following-sibling::input");
+    private final By passwordInput  = By.xpath("//input[@type='password']");
     private final By registerButton = By.xpath("//button[text()='Зарегистрироваться']");
-    private final By loginLink = By.xpath("//a[text()='Войти']");
-    private final By errorMessage = By.xpath("//p[text()='Некорректный пароль']");
+    private final By loginLink      = By.xpath("//a[text()='Войти']");
+    private final By errorMessage   = By.xpath("//p[text()='Некорректный пароль']");
 
     public RegistrationPage(WebDriver driver) {
         super(driver);
     }
 
-
-
-
-
-    // Ввести имя
+    @Step("Ввести имя при регистрации")
     public void enterName(String name) {
         typeText(nameInput, name);
     }
 
-    // Ввести email
+    @Step("Ввести email при регистрации")
     public void enterEmail(String email) {
         typeText(emailInput, email);
     }
 
-    // Ввести пароль
+    @Step("Ввести пароль при регистрации")
     public void enterPassword(String password) {
         typeText(passwordInput, password);
     }
 
-    // Нажать "Зарегистрироваться"
+    @Step("Нажать кнопку «Зарегистрироваться»")
     public void clickRegisterButton() {
         click(registerButton);
     }
 
-    // Нажать ссылку "Войти"
+    @Step("Нажать ссылку «Войти» на странице регистрации")
     public void clickLoginLink() {
         click(loginLink);
     }
 
-    // Проверить видимость ошибки пароля
+    @Step("Проверить отображение ошибки «Некорректный пароль»")
     public boolean isPasswordErrorVisible() {
         return isElementVisible(errorMessage);
     }
 
-    // Получить текст ошибки
+    @Step("Получить текст ошибки при регистрации")
     public String getErrorMessageText() {
         return getText(errorMessage);
     }
 
-    // Зарегистрировать пользователя (все шаги вместе)
+    @Step("Зарегистрировать пользователя {name}, {email}")
     public void registerUser(String name, String email, String password) {
         enterName(name);
         enterEmail(email);
@@ -64,3 +60,4 @@ public class RegistrationPage extends BasePage {
         clickRegisterButton();
     }
 }
+

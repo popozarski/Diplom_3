@@ -11,46 +11,42 @@ import java.time.Duration;
 public class BasePage {
 
     protected WebDriver driver;
+    protected WebDriverWait wait;
 
     public BasePage(WebDriver driver) {
         this.driver = driver;
+        this.wait = new WebDriverWait(driver, Duration.ofSeconds(10));
     }
 
-    // Ожидание видимости элемента
-    protected WebElement waitForElement(By locator) {
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+    protected WebElement waitVisible(By locator) {
         return wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
     }
 
+    protected WebElement waitClickable(By locator) {
+        return wait.until(ExpectedConditions.elementToBeClickable(locator));
+    }
 
-
-    // Клик по элементу
     protected void click(By locator) {
-
-        waitForElement(locator).click();
+        waitClickable(locator).click();
     }
 
-
-
-    // Ввод текста
     protected void typeText(By locator, String text) {
-        WebElement element = waitForElement(locator);
-        element.clear();
-        element.sendKeys(text);
+        WebElement el = waitVisible(locator);
+        el.clear();
+        el.sendKeys(text);
     }
 
-    // Получить текст элемента
     protected String getText(By locator) {
-        return waitForElement(locator).getText();
+        return waitVisible(locator).getText();
     }
 
-    // Проверить, виден ли элемент
     protected boolean isElementVisible(By locator) {
         try {
-            waitForElement(locator);
+            waitVisible(locator);
             return true;
         } catch (Exception e) {
             return false;
         }
     }
 }
+
