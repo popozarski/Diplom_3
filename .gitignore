@@ -14,6 +14,8 @@
 .idea/
 .allure/
 *.iml
+target/
+!target/allure-results/
 
 
 ### Eclipse ###
