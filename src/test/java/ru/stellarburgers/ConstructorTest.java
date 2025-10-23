@@ -13,9 +13,14 @@ public class ConstructorTest extends BaseTest {
     @Description("Проверяем переход на вкладку «Булки»")
     public void testNavigateToBunsSection() {
         MainPage main = new MainPage(driver);
+
+        Assert.assertTrue("Булки должны быть активны по умолчанию", main.isBunsTabActive());
+
         main.clickSaucesTab();
+        Assert.assertTrue("После клика соусы должны быть активны", main.isSaucesTabActive());
+
         main.clickBunsTab();
-        Assert.assertTrue("Вкладка Булки должна быть активна", main.isBunsTabActive());
+        Assert.assertTrue("После клика булки должны быть активны", main.isBunsTabActive());
     }
 
     @Test
@@ -23,8 +28,9 @@ public class ConstructorTest extends BaseTest {
     @Description("Проверяем переход на вкладку «Соусы»")
     public void testNavigateToSaucesSection() {
         MainPage main = new MainPage(driver);
+
         main.clickSaucesTab();
-        Assert.assertTrue("Вкладка Соусы должна быть активна", main.isSaucesTabActive());
+        Assert.assertTrue("После клика соусы должны быть активны", main.isSaucesTabActive());
     }
 
     @Test
@@ -32,8 +38,9 @@ public class ConstructorTest extends BaseTest {
     @Description("Проверяем переход на вкладку «Начинки»")
     public void testNavigateToFillingsSection() {
         MainPage main = new MainPage(driver);
+
         main.clickFillingsTab();
-        Assert.assertTrue("Вкладка Начинки должна быть активна", main.isFillingsTabActive());
+        Assert.assertTrue("После клика начинки должны быть активны", main.isFillingsTabActive());
     }
 }
 

@@ -35,4 +35,13 @@ public class LoginPage extends BasePage {
         enterPassword(password);
         clickLoginButton();
     }
+
+    @Step("Логин под пользователем {email} и переход на главную страницу")
+    public MainPage loginAndReturnToMainPage(String email, String password) {
+        enterEmail(email);
+        enterPassword(password);
+        clickLoginButton();
+        waitForUrl(BASE_URL + "/");
+        return new MainPage(driver);
+    }
 }

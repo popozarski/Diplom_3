@@ -6,29 +6,33 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
-import ru.stellarburgers.pages.*;
+import ru.stellarburgers.pages.ForgotPasswordPage;
+import ru.stellarburgers.pages.LoginPage;
+import ru.stellarburgers.pages.MainPage;
+import ru.stellarburgers.pages.RegistrationPage;
 import ru.stellarburgers.utils.TestDataGenerator;
-
-import java.time.Duration;
+import ru.stellarburgers.utils.UserClient;
+import io.restassured.response.Response;
 
 public class LoginTest extends BaseTest {
 
     private String testEmail;
     private String testPassword;
     private String testName;
+    private String accessToken;
 
     @Before
     @Override
     public void setUp() {
         super.setUp();
-        testEmail    = TestDataGenerator.generateEmail();
+        testEmail = TestDataGenerator.generateEmail();
         testPassword = TestDataGenerator.generateValidPassword();
-        testName     = TestDataGenerator.generateName();
+        testName = TestDataGenerator.generateName();
 
-        // Создаём пользователя через API
-        TestDataGenerator.createUser(testName, testEmail, testPassword);
+        Response createResponse = UserClient.createUser(testName, testEmail, testPassword);
+        createResponse.then().statusCode(200);
+
+        accessToken = UserClient.getAccessToken(testEmail, testPassword);
     }
 
     @Test
@@ -39,13 +43,10 @@ public class LoginTest extends BaseTest {
         mainPage.clickLoginButton();
 
         LoginPage loginPage = new LoginPage(driver);
-        loginPage.login(testEmail, testPassword);
+        MainPage mainPageAfterLogin = loginPage.loginAndReturnToMainPage(testEmail, testPassword);
 
-        // Ждём перехода на главную
-        new WebDriverWait(driver, Duration.ofSeconds(10))
-                .until(ExpectedConditions.urlToBe(BASE_URL + "/"));
-
-        Assert.assertEquals(BASE_URL + "/", driver.getCurrentUrl());
+        Assert.assertEquals("После логина должна быть главная страница",
+                BASE_URL + "/", driver.getCurrentUrl());
     }
 
     @Test
@@ -56,12 +57,10 @@ public class LoginTest extends BaseTest {
         mainPage.clickPersonalAccount();
 
         LoginPage loginPage = new LoginPage(driver);
-        loginPage.login(testEmail, testPassword);
+        MainPage mainPageAfterLogin = loginPage.loginAndReturnToMainPage(testEmail, testPassword);
 
-        new WebDriverWait(driver, Duration.ofSeconds(10))
-                .until(ExpectedConditions.urlToBe(BASE_URL + "/"));
-
-        Assert.assertEquals(BASE_URL + "/", driver.getCurrentUrl());
+        Assert.assertEquals("После логина должна быть главная страница",
+                BASE_URL + "/", driver.getCurrentUrl());
     }
 
     @Test
@@ -74,12 +73,10 @@ public class LoginTest extends BaseTest {
         regPage.clickLoginLink();
 
         LoginPage loginPage = new LoginPage(driver);
-        loginPage.login(testEmail, testPassword);
+        MainPage mainPageAfterLogin = loginPage.loginAndReturnToMainPage(testEmail, testPassword);
 
-        new WebDriverWait(driver, Duration.ofSeconds(10))
-                .until(ExpectedConditions.urlToBe(BASE_URL + "/"));
-
-        Assert.assertEquals(BASE_URL + "/", driver.getCurrentUrl());
+        Assert.assertEquals("После логина должна быть главная страница",
+                BASE_URL + "/", driver.getCurrentUrl());
     }
 
     @Test
@@ -92,17 +89,16 @@ public class LoginTest extends BaseTest {
         forgotPage.clickLoginLink();
 
         LoginPage loginPage = new LoginPage(driver);
-        loginPage.login(testEmail, testPassword);
+        MainPage mainPageAfterLogin = loginPage.loginAndReturnToMainPage(testEmail, testPassword);
 
-        new WebDriverWait(driver, Duration.ofSeconds(10))
-                .until(ExpectedConditions.urlToBe(BASE_URL + "/"));
-
-        Assert.assertEquals(BASE_URL + "/", driver.getCurrentUrl());
+        Assert.assertEquals("После логина должна быть главная страница",
+                BASE_URL + "/", driver.getCurrentUrl());
     }
 
     @After
     public void cleanUp() {
-        TestDataGenerator.deleteUser(testEmail, testPassword);
+        Response deleteResponse = UserClient.deleteUser(accessToken);
+        deleteResponse.then().statusCode(202);
     }
 }
 

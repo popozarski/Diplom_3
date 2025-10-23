@@ -59,5 +59,15 @@ public class RegistrationPage extends BasePage {
         enterPassword(password);
         clickRegisterButton();
     }
+
+    @Step("Зарегистрировать пользователя {name}, {email} и переход на страницу логина")
+    public LoginPage registerUserAndReturnToLoginPage(String name, String email, String password) {
+        enterName(name);
+        enterEmail(email);
+        enterPassword(password);
+        clickRegisterButton();
+        waitForUrl(BASE_URL + "/login");
+        return new LoginPage(driver);
+    }
 }
 
