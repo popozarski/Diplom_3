@@ -20,9 +20,18 @@ public class RegistrationTest extends BaseTest {
 
     @After
     public void cleanUp() {
-        if (accessToken != null) {
-            Response deleteResponse = UserClient.deleteUser(accessToken);
-            deleteResponse.then().statusCode(202);
+        if (testEmail != null && testPassword != null) {
+            try {
+                // Получение токена и удаление пользователя вынесено в cleanUp
+                Response loginResponse = UserClient.loginUser(testEmail, testPassword);
+                if (loginResponse.statusCode() == 200) {
+                    String accessToken = loginResponse.path("accessToken");
+                    Response deleteResponse = UserClient.deleteUser(accessToken);
+                    deleteResponse.then().statusCode(202);
+                }
+            } catch (Exception e) {
+                System.out.println("Failed to delete user in cleanUp: " + e.getMessage());
+            }
         }
     }
 
@@ -42,9 +51,6 @@ public class RegistrationTest extends BaseTest {
         Assert.assertEquals("После регистрации должен быть переход на /login",
                 BASE_URL + "/login", driver.getCurrentUrl());
 
-        Response loginResponse = UserClient.loginUser(testEmail, testPassword);
-        loginResponse.then().statusCode(200);
-        accessToken = loginResponse.path("accessToken");
     }
 
     @Test
